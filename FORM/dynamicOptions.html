@@ -1,0 +1,119 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS DataSource Expression</title>
+  <script>document.write("<base href=\"" + document.location + "\" />");</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <style>
+    select {
+      display: block;
+    }
+
+    label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    var app = angular.module('myApp', []);
+
+    app.controller('MainCtrl', function ($scope) {
+      $scope.users = [
+        { firstName: 'Jo', lastName: 'Jordan', email: 'jo@jordan.com', sex: "Female"},
+        { firstName: 'Anne', lastName: 'Asher', email: 'anne@asher.com', sex: "Female"},
+        { firstName: 'Steve', lastName: 'Stone', email: 'steve@stone.com', sex: "Male"},
+        { firstName: 'Kev', lastName: 'King', email: 'kev@king.com', sex: "Male"}
+      ];
+
+      $scope.countriesByCode = {
+        'AF' : 'AFGHANISTAN',
+        'AX' : 'ÅLAND ISLANDS',
+        'AL' : 'ALBANIA',
+        'DZ' : 'ALGERIA',
+        'AS' : 'AMERICAN SAMOA',
+        'AD' : 'ANDORRA',
+        'AO' : 'ANGOLA',
+        'AI' : 'ANGUILLA',
+        'AQ' : 'ANTARCTICA',
+        'AG' : 'ANTIGUA AND BARBUDA',
+        'AR' : 'ARGENTINA',
+        'AM' : 'ARMENIA',
+        'AW' : 'ARUBA',
+        'AU' : 'AUSTRALIA',
+        'AT' : 'AUSTRIA',
+        'AZ' : 'AZERBAIJAN',
+        'BS' : 'BAHAMAS',
+        'BH' : 'BAHRAIN',
+        'BD' : 'BANGLADESH',
+        'BB' : 'BARBADOS',
+        'BY' : 'BELARUS',
+        'BE' : 'BELGIUM',
+        'BZ' : 'BELIZE',
+        'BJ' : 'BENIN',
+        'BM' : 'BERMUDA'
+      };
+
+      $scope.countriesByName = {
+        'AFGHANISTAN' : 'AF',
+        'ÅLAND ISLANDS' : 'AX',
+        'ALBANIA' : 'AL',
+        'ALGERIA' : 'DZ',
+        'AMERICAN SAMOA' : 'AS',
+        'ANDORRA' : 'AD',
+        'ANGOLA' : 'AO',
+        'ANGUILLA' : 'AI',
+        'ANTARCTICA' : 'AQ',
+        'ANTIGUA AND BARBUDA' : 'AG',
+        'ARGENTINA' : 'AR',
+        'ARMENIA' : 'AM',
+        'ARUBA' : 'AW',
+        'AUSTRALIA' : 'AU',
+        'AUSTRIA' : 'AT',
+        'AZERBAIJAN' : 'AZ',
+        'BAHAMAS' : 'BS',
+        'BAHRAIN' : 'BH',
+        'BANGLADESH' : 'BD',
+        'BARBADOS' : 'BB',
+        'BELARUS' : 'BY',
+        'BELGIUM' : 'BE',
+        'BELIZE' : 'BZ',
+        'BENIN' : 'BJ',
+        'BERMUDA' : 'BM'
+      };
+
+      $scope.getFullName = function (user) {
+        return user.firstName + ' ' + user.lastName;
+      };
+    });
+
+  </script>
+</head>
+<body ng-controller="MainCtrl">
+<label>Select a user value with email for label</label>
+<select ng-model="chosenUser" ng-options="user.email for user in users"></select>
+Selected User: {{ chosenUser }}
+<label>Select a user value with a computed label</label>
+<select ng-model="chosenUser" ng-options="getFullName(user) for user in users"></select>
+Selected User: {{ chosenUser }}
+<label>Select a user's email with a computed label</label>
+<select ng-model="chosenUserEmail" ng-options="user.email as getFullName(user) for user in users"></select>
+Selected User's Email: {{ chosenUserEmail }}
+<label>Select a user grouped by sex</label>
+<select ng-model="chosenUser" ng-options="getFullName(user) group by user.sex for user in users"></select>
+Selected User: {{ chosenUser }}
+
+<!--Syntax: value as label group by grouping-->
+<label>Select a country code by country name, ordered by country code</label>
+<select ng-model="chosenCountryCode" ng-options="code as name for (code, name) in countriesByCode">
+  <option value="">-- No Selection --</option>
+</select>
+Selected Country Code: {{ chosenCountryCode }}
+
+<label>Select a country code by country name, ordered by country name</label>
+<select ng-model="chosenCountryCode" ng-options="code as name for (name, code) in countriesByName"></select>
+Selected Country Code: {{ chosenCountryCode }}
+
+</body>
+</html>

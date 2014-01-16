@@ -1,0 +1,63 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <title>validation errors</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding: 10px;
+    }
+
+    input.ng-invalid {
+      background-color: red;
+    }
+
+    input.ng-dirty.ng-valid {
+      border: solid 2px green;
+    }
+
+
+  </style>
+  <script>
+    var app = angular.module('myApp', []);
+
+    app.controller('MainCtrl', function ($scope) {
+      // This method is here so that we can display the full JSON of the passed in object
+      // The built in json filter removes anythign starting with a $ so you don't get to see the
+      // $dirty, $pristine, etc flags
+      $scope.toJSON = function (obj) {
+        return JSON.stringify(obj, null, 2);
+      };
+      $scope.canSave = function () {
+        return $scope.userInfoForm.$dirty && $scope.userInfoForm.$valid;
+      };
+    });
+  </script>
+</head>
+<body ng-controller="MainCtrl">
+<h1>User Info</h1>
+
+<form name="userInfoForm" novalidate>
+  <div ng-show="userInfoForm.$invalid">The User Form is invalid.</div>
+  <label>E-mail</label>
+  <input type="email" ng-model="user.email" name="email">
+  <label>Last name</label>
+  <input type="text" ng-model="user.lastName" name="lastName">
+  <label>First name</label>
+  <input type="text" ng-model="user.firstName" name="firstName">
+  <label>Website</label>
+  <input type="url" ng-model="user.website" name="website">
+  <label>Description</label>
+  <textarea ng-model="user.description" name="description"></textarea>
+  <label>Password</label>
+  <input type="password" ng-model="user.password" name="password">
+  <label>Password (repeat)</label>
+  <input type="password" ng-model="repeatPassword" name="repeatPassword">
+  <label>Roles</label>
+  <label class="checkbox"><input type="checkbox" ng-model="user.admin" name="admin"> Is Administrator</label>
+  <button ng-click="save()" ng-disabled="!canSave()">Save</button>
+</form>
+</body>
+</html>

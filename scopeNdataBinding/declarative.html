@@ -1,0 +1,57 @@
+<html>
+<head>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <style type="text/css">
+    .text-warning {
+      color: cornflowerblue;
+    }
+    .text-error {
+      color: red;
+    }
+  </style>
+</head>
+<body ng-app>
+
+<script type="text/javascript">
+  var MAX_LEN = 60,
+      WARN_THRESHOLD = 21;
+
+  var TextAreaWithLimitCtrl = function ($scope) {
+    $scope.message = '';
+
+    $scope.remaining = function () {
+      return MAX_LEN - $scope.message.length;
+    };
+
+    $scope.shouldWarn = function () {
+      return $scope.remaining() < WARN_THRESHOLD;
+    };
+
+    $scope.hasValidLength = function () {
+      return $scope.message.length <= MAX_LEN;
+    };
+
+    $scope.clear = function () {
+      $scope.message = '';
+    };
+
+    $scope.send = function () {
+      console.log($scope.message);
+    };
+  };
+</script>
+
+<div ng-controller="TextAreaWithLimitCtrl" class="container">
+  <span ng-class="{'text-warning' : shouldWarn(), 'text-error' : !hasValidLength()}">Remaining: {{remaining()}}</span>
+
+  <div>
+    <textarea ng-model="message">{{message}}</textarea>
+  </div>
+  <div class="row">
+    <button ng-click="send()" ng-disabled="!hasValidLength()">Send</button>
+    <button ng-click="clear()">Clear</button>
+  </div>
+</div>
+</body>
+</html>

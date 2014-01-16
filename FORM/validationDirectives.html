@@ -1,0 +1,42 @@
+<!doctype html>
+<html ng-app ng-init="user.name = 'Arif'">
+<head>
+  <meta charset="utf-8">
+  <title>Text based input directive</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+</head>
+<body>
+<h1>hi {{user.name}}</h1>
+<label>Password (must be between 3 and 10 characters, and contain at least one numeral and one alphabetic
+  character)</label>
+<input type="password" ng-model="user.password" ng-minlength="3" ng-maxlength="10"
+       ng-pattern="/^.*(?=.*\d)(?=.*[a-zA-Z]).*$/">
+
+<label>Roles</label>
+<label class="checkbox"><input type="checkbox" ng-model="user.role" ng-true-value="admin" ng-false-value="basic"> Is
+  Administrator</label>
+
+<label>Sex</label>
+<label class="radio"><input type="radio" ng-model="user.sex" value="male"> Male</label>
+<label class="radio"><input type="radio" ng-model="user.sex" value="female"> Female</label>
+
+<label>Marriage</label>
+<select ng-model="user.married" ng-init="user.married = 'y'">
+  <option value="y" ng-selected="user.married=='y'">Married</option>
+  <option value="n" ng-selected="user.married=='n'">Single</option>
+</select>
+
+<!--email-->
+<!--max-->
+<!--maxlength-->
+<!--min-->
+<!--minlength-->
+<!--number-->
+<!--pattern-->
+<!--required-->
+<!--url-->
+
+<pre ng-bind="user | json"></pre>
+</body>
+</html>
