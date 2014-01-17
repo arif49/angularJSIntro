@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="myCtrl">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+  <meta charset=utf-8/>
+  <title>JS Bin</title>
+  <script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function () {
+    });
+    app.directive('rotateOnClick', function () {
+      return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+          var deg = 0;
+          element.bind('click', function () {
+            deg += parseInt(attrs.rotateOnClick, 10);
+            element.css({
+              webkitTransform: 'rotate(' + deg + 'deg)',
+              mozTransform: 'rotate(' + deg + 'deg)',
+              msTransform: 'rotate(' + deg + 'deg)',
+              oTransform: 'rotate(' + deg + 'deg)',
+              transform: 'rotate(' + deg + 'deg)'
+            });
+          });
+        }
+      };
+    });
+  </script>
+  <style>
+    [rotate-on-click] {
+      height: 50px;
+      width: 50px;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+<div rotate-on-click="45"></div>
+<div rotate-on-click="10"></div>
+</body>
+</html>
