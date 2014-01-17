@@ -1,0 +1,75 @@
+<html>
+<head>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
+    <script>
+      angular.module('notificationsApp', [])
+          .controller('NotificationsCtrl', function ($scope, notificationsService) {
+            $scope.addNotification = function () {
+              notificationsService.push($scope.notification);
+              $scope.notification = '';
+            };
+            $scope.getNotifications = function () {
+              return notificationsService.getCurrent();
+            };
+          })
+          .provider('notificationsService', function () {
+            var config = {
+              maxLen : 10,
+              shouldArchive : true
+            };
+            var notifications = [];
+            return {
+              setMaxLen : function(maxLen) {
+                config.maxLen = maxLen || config.maxLen;
+              },
+              $get : function(notificationsArchive) {
+                return {
+                  push:function (notification) {
+                    var notificationToArchive;
+                    var newLen = notifications.unshift(notification);
+                    if (newLen > config.maxLen) {
+                      notificationToArchive = notifications.pop();
+                      notificationsArchive.archive(notificationToArchive);
+                    }
+                  },
+                  getCurrent:function () {
+                    return notifications;
+                  }
+                };
+              }
+            };
+          })
+          .config(function(notificationsServiceProvider){
+            notificationsServiceProvider.setMaxLen(5);
+          })
+          .factory('notificationsArchive', function () {
+            var archivedNotifications = [];
+            return {
+              archive:function (notification) {
+                archivedNotifications.push(notification);
+              },
+              getArchived:function () {
+                return archivedNotifications;
+              }};
+          });
+    </script>
+</head>
+
+<body ng-app="notificationsApp" ng-controller="NotificationsCtrl">
+<div class="well">
+    <form>
+        <textarea ng-model="notification" cols="40" rows="3" class="span6"></textarea><br>
+        <button class="btn btn-primary" ng-click="addNotification()">Add</button>
+    </form>
+</div>
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>Notifications</th>
+    </tr>
+    <tr ng-repeat="notification in getNotifications()">
+        <td>{{notification}}</td>
+    </tr>
+</table>
+</body>
+</html>
