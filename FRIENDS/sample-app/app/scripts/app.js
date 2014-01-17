@@ -1,4 +1,4 @@
-angular.module('sampleYeomanAppApp', [])
+angular.module('sampleApp', [])
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/', {
